@@ -1,24 +1,18 @@
-/**
- * @file contains function that handle trivial request
- * @author Fikri Rahmat Nurhidayat
- */
-
- module.exports = {
+module.exports = {
     onLost(req, res) {
-      res.status(404).json({
-        status: "FAIL",
-        message: "Route not found!",
-      });
+        res.status(404).json({
+            status: 'FAILED',
+            message: 'Route is not found!',
+        });
     },
-  
+
     onError(err, req, res, next) {
-      res.status(500).json({
-        status: "ERROR",
-        error: {
-          name: err.name,
-          message: err.message,
-        },
-      });
+        res.status(500).json({
+            status: 'ERROR',
+            error: {
+                name: err.name,
+                message: err.message,
+            },
+        });
     },
-  };
-  
+};

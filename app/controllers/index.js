@@ -1,12 +1,5 @@
-/**
- * @file contains entry point of controllers module
- * @author Fikri Rahmat Nurhidayat
- */
+const api = require('./api');
 
- const api = require("./api");
- const main = require("./api/main");
- 
- module.exports = {
-   api,
- };
- 
+module.exports = {
+    api,
+};

@@ -1,35 +1,57 @@
-const { users } = require('../models');
+const { Users, userRoles } = require('../models');
 
 module.exports = {
-  findUsers() {
-    return users.findAll();
-  },
+    async create(userName, email, password, role) {
+        return Users.create({
+            userName: userName,
+            email: email,
+            password: password,
+            role: role
+        })
+        .then((newUser) => {
+            return Users.findByPk(newUser.id, {
+                include: [{ model: userRoles, as: 'UserRole' }],
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+            throw err;
+        });
+    },
 
-  findUser(condition) {
-    return users.findOne({ where: condition });
-  },
+    findUser(email) {
+        return Users.findOne({ where: { email: email }, include: [{ model: userRoles, as: 'UserRole' }] });
+    },
 
-  create(body) {
-    return users.create(body);
-  },
+    findUserName(userName){
+        return Users.findOne({where: {userName: userName}, include: [{ model: userRoles, as: 'UserRole' }]})
+    },
 
-  update(body, id) {
-    return users.update(body, {
-      where: { id }
-    });
-  },
+    find(id) {
+        return Users.findByPk(id, {
+            include: [{ model: userRoles, as: 'UserRole' }],
+        });
+    },
 
-  delete(id) {
-    return users.destroy({
-      where: { id }
-    });
-  },
+    findAll() {
+        return Users.findAll({
+            include: [{ model: userRoles, as: 'UserRole' }],
+        });
+    },
 
-  findByPk(id) {
-    return users.findOne(id);
-  },
+    update(id, updateArgs) {
+        return Users.update(updateArgs, {
+            where: {
+                id: id,
+            },
+        });
+    },
 
-  getTotalUser() {
-    return users.count();
-  }
-}
+    delete(id) {
+        return Users.destroy(id);
+    },
+
+    getTotalUsers() {
+        return Users.count();
+    },
+};
